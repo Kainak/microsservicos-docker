@@ -55,10 +55,10 @@ Antes de rodar o projeto, certifique-se de ter instalado:
 
 ## Como Parar os Contêineres
 
-Para parar e remover os contêineres e volumes, use:
+Para parar e remover os contêineres, use:
 
 ```sh
-docker-compose down -v
+docker-compose down
 ```
 
 Se desejar remover os volumes também:
