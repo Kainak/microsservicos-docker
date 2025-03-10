@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  microsservico1:
+    image: nginx:latest
+    container_name: microsservico1
+    networks:
+      - net1
+    ports:
+      - "8001:80"
+    volumes:
+      - ./microsservico1/index.html:/usr/share/nginx/html/index.html
+    depends_on:
+      - db1
+
+  db1:
+    image: postgres:latest
+    container_name: db1
+    networks:
+      - net1
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db1
+    volumes:
+      - db1_data:/var/lib/postgresql/data
+
+  microsservico2:
+    image: nginx:latest
+    container_name: microsservico2
+    networks:
+      - net2
+    ports:
+      - "8002:80"
+    volumes:
+      - ./microsservico2/index.html:/usr/share/nginx/html/index.html
+    depends_on:
+      - db2
+
+  db2:
+    image: postgres:latest
+    container_name: db2
+    networks:
+      - net2
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db2
+    volumes:
+      - db2_data:/var/lib/postgresql/data
+
+
+  microsservico3:
+    image: nginx:latest
+    container_name: microsservico3
+    networks:
+      - net3
+    ports:
+      - "8003:80"
+    volumes:
+      - ./microsservico3/index.html:/usr/share/nginx/html/index.html
+    depends_on:
+      - db3
+
+  db3:
+    image: mysql:latest
+    container_name: db3
+    networks:
+      - net3
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: db3
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    volumes:
+      - db3_data:/var/lib/mysql
+
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - net1
+      - net2
+      - net3
+
+networks:
+  net1:
+  net2:
+  net3:
+
+volumes:
+  db1_data:
+  db2_data:
+  db3_data:
